@@ -7,8 +7,11 @@ Go语言的`defer`语句提供了强大的机制，通常用于简化执行各�
 [官方文档](https://golang.org/ref/spec#Defer_statements)中有明确的说明。
 以下是我个人的理解，英文水平有限。
 1. `defer` 语句push 到一个list中，这个list是后进先出(LIFO)
+
 2. `defer` 语句是在 return 前执行
+
 3. `defer` 语句在执行时，函数值和参数是及时评估（确定）
+
     例如:
     ```go
     func f6() int {
@@ -18,12 +21,17 @@ Go语言的`defer`语句提供了强大的机制，通常用于简化执行各�
         return i
     }
     ```
+
 4. 在一个有命名返回值的`function`中，定义了内嵌的`defer function`，这个`defer function` 在 父`function` 返回前，可以访问并且修改命名返回值。比如上边的f(),f3()。而`defer function`中有返回值的话，会被丢弃。
+
 5. `defer` 语句配合 `panic` 和 `recover` 使用。
 
 在Go Blog，[Defer, Panic, and Recover](https://blog.golang.org/defer-panic-and-recover) 也给出了几个简单规则。引自此blog。
+
 1. A deferred function's arguments are evaluated when the defer statement is evaluated.
+
 2. Deferred function calls are executed in Last In First Out order after the surrounding function returns.
+
 3. Deferred functions may read and assign to the returning function's named return values.
 
 在了解`defer`的规则之后，接下来看看`defer`实现机制。
@@ -75,3 +83,10 @@ func f2() int {
 
 ### 最后
 `defer` 强大的机制给gopher带来方便，但也是性能杀手，慎用之。
+
+**参考资料**
+* Go 官方文档 [Defer_statements](https://golang.org/ref/spec#Defer_statements)
+
+* Go Blog [Defer, Panic, and Recover](https://blog.golang.org/defer-panic-and-recover)
+
+* [http://www.zenlife.tk/golang-defer.md](http://www.zenlife.tk/golang-defer.md)
