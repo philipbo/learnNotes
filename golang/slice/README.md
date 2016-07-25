@@ -44,35 +44,33 @@ Go语言中的`array`、`slice`，你真的了解了吗？先看下段代码，�
 
     例如:
 
-    var a [2]int
-    a[0] = 1
-    fmt.Println(a[1]) // output 0
+        var a [2]int
+        a[0] = 1
+        fmt.Println(a[1]) // output 0
 
-    var b [2]bool
-    fmt.Println(b[0]) // output false
+        var b [2]bool
+        fmt.Println(b[0]) // output false
 
-    var s [2]string
-    fmt.Println(s[0]) // output ""
+        var s [2]string
+        fmt.Println(s[0]) // output ""
 
 3. **长度是固定的，是数组类型中的一部分，并且是非负数, [5]int与[10]int是不同的**
 4. **数组是值类型，分配或是传递一个数组时，是`copy` 数组所有内容，并不是指向原数组的指针；**如果想不复制数组的内容，可以传递指针，并这不是go的style，可以使用`slice`代替
 5. 数组主要用于构造`slice`
 
 ### 内部结构：
-![go-array-slices-array.png](/uploads/go-array-slices-array.png)
+![go-array-slices-array.png](go-array-slices-array.png)
 
 ## Slice
 Slice切片是对底层数组Array的封装，提供了更广泛、功能强大、更方法的数据序列。在内存中的存储本质就是数组，体现为连续的内存块。
 
 ### 用法:
 1. 从`array`创建
-
     a := [5]int{1, 2, 3, 4, 5}
     s := a[1:3] //左闭右开
     fmt.Println(s) //output [2 3]
 
 2. 类似创建数组一样，去掉长度，或使用`make` 内建方法来创建
-
     s := []int{1, 2, 3, 4, 5}
     // or
     s := make([]int, 5, 5)
@@ -111,6 +109,7 @@ Slice切片是对底层数组Array的封装，提供了更广泛、功能强大�
     afert 2 append s1 len - 7 cap - 8 pointer - 0xc820010280 val - [2 3 10 11 12 13 14]
 
 看到这里，我们看一下开篇的代码输入的是什么？
+
 **答案**
 
     func slice=[1 -1 -2 -3 -1 -2 -3]
@@ -121,13 +120,13 @@ Slice切片是对底层数组Array的封装，提供了更广泛、功能强大�
 ### 内部结构
 
 一个`slice`结构是一个指向数组的指针，一个长度（len）和容量（cap）字段
-![slice struct](/uploads/go-array-slices-internals_slice-struct.png)
+![slice struct](go-array-slices-internals_slice-struct.png)
 
 创建 `s := make([]byte, 5)`， 结构是这样的:
-![slice struct](/uploads/go-array-slices-internals_slice-1.png)
+![slice struct](go-array-slices-internals_slice-1.png)
 
 使用切片`s = s[2:4]`， 结构是这样的:
-![slice struct](/uploads/go-array-slices-internals_slice-2.png)
+![slice struct](go-array-slices-internals_slice-2.png)
 Slicing不会复制数据。只是创建了一个新的切片值，指向原始数组。新切片的操作对原始数组有效。也就是说修改了切片的值，同样修改了之前的数组的值(英文水平有限:P)，上例子:
 
     fmt.Println("修改前")
